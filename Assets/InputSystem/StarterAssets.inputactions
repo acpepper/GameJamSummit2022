@@ -42,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Opposite",
+                    "name": "OppositeOn",
                     "type": "PassThrough",
                     "id": "2ada8dc3-caf1-4f45-b452-a88f294191f1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OppositeOff",
+                    "type": "PassThrough",
+                    "id": "c5e77ef0-c9fb-4e1d-a235-33d85784f3f4",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -231,11 +240,22 @@
                 {
                     "name": "",
                     "id": "f3aa2ab8-0490-42b6-b4d2-29f1faaa60a5",
-                    "path": "<Keyboard>/tab",
+                    "path": "<Keyboard>/q",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "Opposite",
+                    "action": "OppositeOn",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a14e6bf4-4113-4b6f-9529-a6182a3107ba",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OppositeOff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

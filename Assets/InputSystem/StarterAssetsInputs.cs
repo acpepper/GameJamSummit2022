@@ -12,7 +12,8 @@ namespace StarterAssets
 	public Vector2 look;
 	public bool jump;
 	public bool sprint;
-	public bool opposite;
+	public bool oppositeOn;
+	public bool oppositeOff;
 		
 	[Header("Movement Settings")]
 	public bool analogMovement;
@@ -47,9 +48,14 @@ namespace StarterAssets
 	    SprintInput(value.isPressed);
 	}
 
-	public void OnOpposite(InputValue value)
+	public void OnOppositeOn(InputValue value)
 	{
-	    OppositeInput(value.isPressed);
+	    OppositeOnInput(value.isPressed);
+	}
+
+	public void OnOppositeOff(InputValue value)
+	{
+	    OppositeOffInput(value.isPressed);
 	}
 #else
 	// old input sys if we do decide to have it (most likely wont)...
@@ -77,9 +83,14 @@ namespace StarterAssets
 	    sprint = newSprintState;
 	}
 
-	public void OppositeInput(bool newOppositeState)
+	public void OppositeOnInput(bool newOppositeOnState)
 	{
-	    opposite = newOppositeState;
+	    oppositeOn = newOppositeOnState;
+	}
+
+	public void OppositeOffInput(bool newOppositeOffState)
+	{
+	    oppositeOff = newOppositeOffState;
 	}
 
 #if !UNITY_IOS || !UNITY_ANDROID

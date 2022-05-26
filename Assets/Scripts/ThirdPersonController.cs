@@ -95,8 +95,6 @@ namespace StarterAssets
 
 	private bool IsCurrentDeviceMouse => _playerInput.currentControlScheme == "KeyboardMouse";
 
-	private GameObject[] _oppObs;
-	
 	private void Awake()
 	{
 	    // get a reference to our main camera
@@ -123,8 +121,6 @@ namespace StarterAssets
 	private void Update()
 	{
 	    _hasAnimator = TryGetComponent(out _animator);
-	    
-	    Opposite();
 	    
 	    JumpAndGravity();
 	    GroundedCheck();
@@ -236,27 +232,6 @@ namespace StarterAssets
 	    {
 		_animator.SetFloat(_animIDSpeed, _animationBlend);
 		_animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
-	    }
-	}
-
-	private void Opposite()
-	{
-	    if (_input.opposite)
-	    {
-		_oppObs = GameObject.FindGameObjectsWithTag("opp-able");
-		foreach (GameObject ob in _oppObs)
-		{
-		    // MeshRenderer mesh = ob.GetComponent(typeof(MeshRenderer)) as MeshRenderer;
-		    // List<Material> mats = new List<Material>();
-		    // mesh.GetMaterials(mats);
-		    // foreach (Material mat in mats)
-		    // {
-		    // 	mat.shader = Shader.Find("_Color");
-		    // 	mat.SetColor("_Color", Color.red);
-		    // }
-		    Transform trans = ob.GetComponent(typeof(Transform)) as Transform;
-		    trans.Translate(Vector3.up * 2 * Time.deltaTime);
-		}
 	    }
 	}
 	
