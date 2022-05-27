@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
+
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -13,33 +15,23 @@ namespace StarterAssets
     {
 	public float oppTimeout = 0.50f;
 	public bool opp = false;
-	// timeout deltatime
-	private float _oppTimeoutDelta;
 
+	private float _oppTimeoutDelta;
 	private GameObject[] _oppObs;
 	private StarterAssetsInputs _input;
+	private VolumeProfile _volProf;
+	private UnityEngine.Rendering.Universal.ColorAdjustments _colAdj;
 	
 	private void Start()
 	{
-	    _input = GetComponent<StarterAssetsInputs>();
 	    _oppObs = GameObject.FindGameObjectsWithTag("opp-able");
-	    
-	    if (opp)
-	    {
-		_oppObs = GameObject.FindGameObjectsWithTag("opp-able");
-		foreach (GameObject ob in _oppObs)
-		{
-		    ob.SetActive(false);
-		}
-	    }
-	    else
-	    {
-		_oppObs = GameObject.FindGameObjectsWithTag("opp-able");
-		foreach (GameObject ob in _oppObs)
-		{
-		    ob.SetActive(true);
-		}
-	    }
+	    _input = GetComponent<StarterAssetsInputs>();
+	    _volProf = GameObject.FindGameObjectWithTag("global-vol").GetComponent<Volume>()?.profile;
+	    if(!_volProf) throw new System.NullReferenceException(nameof(VolumeProfile));
+     
+	    if(!_volProf.TryGet(out _colAdj)) throw new System.NullReferenceException(nameof(_colAdj));
+     
+	    SetOpp();
 
 	    // reset our timeouts on start
 	    _oppTimeoutDelta = oppTimeout;
@@ -56,27 +48,49 @@ namespace StarterAssets
 	    {
 		if (_input.oppositeOn)
 		{
-		    opp = true;
-
-		    foreach (GameObject ob in _oppObs)
+		    if(!opp)
 		    {
-			ob.SetActive(false);
+			opp = true;
+			SetOpp();
 		    }
 		}
 		else if (_input.oppositeOff)
 		{
-		    opp = false;
-		
-		    Debug.Log(_oppObs.Length);
-		    foreach (GameObject ob in _oppObs)
+		    if (opp)
 		    {
-			ob.SetActive(true);
+			opp = false;
+			SetOpp();
 		    }
 		}
 	    }
+	    
 	    else if (_oppTimeoutDelta >= 0.0f)
 	    {
 		_oppTimeoutDelta -= Time.deltaTime;
+	    }
+	}
+
+	private void SetOpp()
+	{
+	    if (opp)
+	    {
+		// deactivate normal objects
+		foreach (GameObject ob in _oppObs)
+		{
+		    ob.SetActive(false);
+		}
+		// hue shift
+		_colAdj.hueShift.Override(Random.Range(-180.0f, 180.0f));
+	    }
+	    else
+	    {
+		// reactivate normal objects
+		foreach (GameObject ob in _oppObs)
+		{
+		    ob.SetActive(true);
+		}
+		// reset hue shift
+		_colAdj.hueShift.Override(0.0f);
 	    }
 	}
     }
