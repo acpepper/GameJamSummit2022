@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CinemachineTarget
   - opp-able
+  - global-vol
   layers:
   - Default
   - TransparentFX
